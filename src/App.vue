@@ -18,13 +18,8 @@ const isOpen = ref(false);
 const getPosts = () => {
   return ZOHO.CRM.CONNECTION.invoke("crm_oauth_connection", {
     method: "GET",
-    url:
-      "https://crm.zoho.eu/crm/v3/TestPosts/search?criteria=User:equals:" +
-      props.page.EntityId +
-      "&fields=Name,Type,Body,Image",
+    url: "https://crm.zoho.eu/crm/v3/TestPosts?fields=Name,Type,Body,Image&sort_by=Created_Time",
   }).then(function (data) {
-    console.log("data", data);
-
     posts.value = data.details.statusMessage.data;
 
     posts.value.forEach((post) => {

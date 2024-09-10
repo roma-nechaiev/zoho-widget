@@ -95,10 +95,11 @@ const insertRecord = (values, image) => {
       ],
     },
   }).then((res) => {
-    const { data, code, message } = res.details.statusMessage;
+    const data = res.details.statusMessage.data[0];
+
     alert.value = {
-      code,
-      message: data?.[0]?.message || message,
+      code: data.code,
+      message: data.message,
     };
     form.resetForm("Name", "Type", "Body", "Image");
     props.postHandler();
@@ -115,9 +116,9 @@ const onSubmit = form.handleSubmit((values) => {
 
 <template>
   <form @submit="onSubmit" class="mt-5 space-y-2 px-4">
-    <Alert v-if="alert && alert.code == 'SUCCESS'" @click="alert = null">
+    <Alert v-if="alert != null" @click="alert = null">
       <Terminal class="size-4" />
-      <AlertTitle class="capitalize">{{ alert.code.toLowerCase() }}</AlertTitle>
+      <AlertTitle class="capitalize">{{ alert.code }}</AlertTitle>
       <AlertDescription>{{ alert.message }}</AlertDescription>
     </Alert>
 
