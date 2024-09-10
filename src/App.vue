@@ -10,14 +10,21 @@ import { ChevronDown, ChevronUp } from "lucide-vue-next";
 import PostCard from "@/components/PostCard.vue";
 import PostForm from "@/components/PostForm.vue";
 
+const props = defineProps(["page"]);
 const posts = ref(null);
 const isOpen = ref(false);
 
+//  props.page.EntityId
 const getPosts = () => {
   return ZOHO.CRM.CONNECTION.invoke("crm_oauth_connection", {
     method: "GET",
-    url: "https://www.zohoapis.eu/crm/v3/TestPosts?fields=Name,Image,Body,Type,User,Created_Time,&per_page=10",
+    url:
+      "https://crm.zoho.eu/crm/v3/TestPosts/search?criteria=User:equals:" +
+      props.page.EntityId +
+      "&fields=Name,Type,Body,Image",
   }).then(function (data) {
+    console.log("data", data);
+
     posts.value = data.details.statusMessage.data;
 
     posts.value.forEach((post) => {
@@ -63,7 +70,7 @@ getPosts();
       </CollapsibleTrigger>
     </div>
     <CollapsibleContent>
-      <PostForm :postHandler="getPosts" />
+      <PostForm :postHandler="getPosts" :userId="props.page.EntityId" />
     </CollapsibleContent>
   </Collapsible>
 

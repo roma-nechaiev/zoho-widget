@@ -26,7 +26,7 @@ import { Terminal } from "lucide-vue-next";
 
 // defineProps(["postHandler", "someprops"]);
 const alert = ref(null);
-const props = defineProps(["postHandler"]);
+const props = defineProps(["postHandler", "userId"]);
 
 configure({
   validateOnBlur: true,
@@ -86,6 +86,7 @@ const insertRecord = (values, image) => {
     parameters: {
       data: [
         {
+          User: props.userId,
           Name: values.Name,
           Type: values.Type,
           Body: values.Body,
